@@ -3,6 +3,7 @@ const router = express.Router();
 
 const posts = require("../data/posts");
 const users = require("../data/users");
+const comments = require("../data/comments");
 const error = require("../utilities/error");
 
 //router

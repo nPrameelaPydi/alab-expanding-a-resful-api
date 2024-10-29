@@ -5,32 +5,32 @@ const posts = require("../data/posts");
 const users = require("../data/users");
 const error = require("../utilities/error");
 
-router
-    .route("/")
-    .get((req, res) => {
-        const links = [
-            {
-                href: "posts/:id",
-                rel: ":id",
-                type: "GET",
-            },
-        ];
+//router
+//    .route("/")
+//    .get((req, res) => {
+//        const links = [
+//            {
+//                href: "posts/:id",
+//                rel: ":id",
+//                type: "GET",
+//            },
+//        ];
 
-        res.json({ posts, links });
-    })
-    .post((req, res, next) => {
-        if (req.body.userId && req.body.title && req.body.content) {
-            const post = {
-                id: posts[posts.length - 1].id + 1,
-                userId: req.body.userId,
-                title: req.body.title,
-                content: req.body.content,
-            };
+//        res.json({ posts, links });
+//    })
+//    .post((req, res, next) => {
+//        if (req.body.userId && req.body.title && req.body.content) {
+//            const post = {
+//                id: posts[posts.length - 1].id + 1,
+//                userId: req.body.userId,
+//                title: req.body.title,
+//                content: req.body.content,
+//            };
 
-            posts.push(post);
-            res.json(posts[posts.length - 1]);
-        } else next(error(400, "Insufficient Data"));
-    });
+//            posts.push(post);
+//            res.json(posts[posts.length - 1]);
+//        } else next(error(400, "Insufficient Data"));
+//    });
 
 router
     .route("/:id")
@@ -77,5 +77,31 @@ router
         if (post) res.json(post);
         else next();
     });
+
+//retrieves all posts by a user with the specified postId.
+router.get("/", (req, res, next) => {
+    const { userId } = req.query;
+    console.log("Received userId:", userId); // Check if userId is correctly logged
+
+    let filteredPosts;
+
+    if (userId) {
+        filteredPosts = posts.filter(post => post.userId == userId);
+
+        if (filteredPosts.length === 0) {
+            return res.json({ message: "No posts found for this user" });
+        }
+    } else {
+        filteredPosts = posts;
+    }
+
+    res.json({ posts: filteredPosts });
+});
+
+
+
+
+
+
 
 module.exports = router;

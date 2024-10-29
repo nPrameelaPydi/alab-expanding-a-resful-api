@@ -87,6 +87,22 @@ router.delete("/:id", (req, res) => {
     }
 });
 
+//retrieve all comments with the specified userId.
+router.get("/", (req, res, next) => {
+    const { userId } = req.query;
+    let filteredcomments;
+    if (userId) {
+        filteredcomments = comments.filter(comment => comment.userId == userId);
+        if (filteredcomments.length === 0) {
+            return res.json({ message: "No comments found for this userId" });
+        }
+    } else {
+        filteredcomments = comments;
+    }
+
+    res.json({ comments: filteredcomments });
+});
+
 
 //export comments router
 module.exports = router;

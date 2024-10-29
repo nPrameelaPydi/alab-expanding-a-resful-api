@@ -95,9 +95,9 @@ router
 //    res.json({ comments: filteredComments });
 //});
 
+
 //GET /posts/:id/comments?userId=<VALUE>
 //Retrieves all comments made on the post with the specified id by a user with the specified userId.
-// GET /posts/:id/comments?userId=<VALUE>
 router.get("/:id/comments", (req, res) => {
     const { id } = req.params;        // Extract post id from route parameter
     const { userId } = req.query;      // Extract userId from query parameter

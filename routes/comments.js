@@ -87,6 +87,9 @@ router.delete("/:id", (req, res) => {
     }
 });
 
+
+//GET /comments?userId=<VALUE>
+//GET /comments?postId=<VALUE>
 //retrieve all comments with the specified userId, postId.
 router.get("/", (req, res, next) => {
     const { userId, postId } = req.query;

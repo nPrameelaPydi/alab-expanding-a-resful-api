@@ -83,17 +83,40 @@ router
     });
 
 
-// GET /posts/:id/comments, 
-//get all comments for a specific postId
-router.get("/:id/comments", (req, res) => {
-    const { id } = req.params; // Extract post id from route parameter
+//// GET /posts/:id/comments, 
+////get all comments for a specific postId
+//router.get("/:id/comments", (req, res) => {
+//    const { id } = req.params; // Extract post id from route parameter
 
-    const filteredComments = comments.filter(comment => comment.postId == id);
-    if (filteredComments.length === 0) {
-        return res.json({ message: "No comments found for this post" });
+//    const filteredComments = comments.filter(comment => comment.postId == id);
+//    if (filteredComments.length === 0) {
+//        return res.json({ message: "No comments found for this post" });
+//    }
+//    res.json({ comments: filteredComments });
+//});
+
+//GET /posts/:id/comments?userId=<VALUE>
+//Retrieves all comments made on the post with the specified id by a user with the specified userId.
+// GET /posts/:id/comments?userId=<VALUE>
+router.get("/:id/comments", (req, res) => {
+    const { id } = req.params;        // Extract post id from route parameter
+    const { userId } = req.query;      // Extract userId from query parameter
+
+    // Filter comments by postId
+    let filteredComments = comments.filter(comment => comment.postId == id);
+
+    // Further filter by userId if provided
+    if (userId) {
+        filteredComments = filteredComments.filter(comment => comment.userId == userId);
     }
+    // If no comments are found, return a message
+    if (filteredComments.length === 0) {
+        return res.json({ message: "No comments found for the specified criteria." });
+    }
+
     res.json({ comments: filteredComments });
 });
+
 
 
 

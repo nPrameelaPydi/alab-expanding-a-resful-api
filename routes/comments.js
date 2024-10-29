@@ -7,13 +7,13 @@ const users = require("../data/users");
 const posts = require("../data/posts");
 
 // GET all comments
-router.get("/", (req, res) => {
-    try {
-        res.json(comments);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching comments" });
-    }
-});
+//router.get("/", (req, res) => {
+//    try {
+//        res.json(comments);
+//    } catch (error) {
+//        res.status(500).json({ error: "Error fetching comments" });
+//    }
+//});
 
 // GET comment by id
 router.get("/:id", (req, res) => {
@@ -87,21 +87,33 @@ router.delete("/:id", (req, res) => {
     }
 });
 
-//retrieve all comments with the specified userId.
+//retrieve all comments with the specified userId, postId.
 router.get("/", (req, res, next) => {
-    const { userId } = req.query;
-    let filteredcomments;
+    const { userId, postId } = req.query;
+    let filteredcomments = comments;
+
+    // Filter by userId if provided
     if (userId) {
-        filteredcomments = comments.filter(comment => comment.userId == userId);
+        filteredcomments = filteredcomments.filter(comment => comment.userId == userId);
         if (filteredcomments.length === 0) {
             return res.json({ message: "No comments found for this userId" });
         }
-    } else {
-        filteredcomments = comments;
     }
-
+    // Filter by postId if provided
+    if (postId) {
+        filteredcomments = filteredcomments.filter(comment => comment.postId == postId);
+        if (filteredcomments.length === 0) {
+            return res.json({ message: "No comments found for this postId" });
+        }
+    }
+    // Return the filtered comments
     res.json({ comments: filteredcomments });
 });
+
+
+
+
+
 
 
 //export comments router

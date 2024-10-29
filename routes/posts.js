@@ -83,9 +83,17 @@ router
     });
 
 
+// GET /posts/:id/comments, 
+//get all comments for a specific postId
+router.get("/:id/comments", (req, res) => {
+    const { id } = req.params; // Extract post id from route parameter
 
-
-
+    const filteredComments = comments.filter(comment => comment.postId == id);
+    if (filteredComments.length === 0) {
+        return res.json({ message: "No comments found for this post" });
+    }
+    res.json({ comments: filteredComments });
+});
 
 
 

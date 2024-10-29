@@ -96,6 +96,19 @@ router.get("/:id/posts", (req, res, next) => {
 });
 
 
+//GET /users/:id/comments
+//Retrieves comments made by the user with the specified id.
+router.get("/:id/comments", (req, res) => {
+    const { id } = req.params; // Extract post id from route parameter
+
+    const filteredComments = comments.filter(comment => comment.userId == id);
+    if (filteredComments.length === 0) {
+        return res.json({ message: "No comments found for this post" });
+    }
+    res.json({ comments: filteredComments });
+});
+
+
 
 
 

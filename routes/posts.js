@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const posts = require("../data/posts");
+const users = require("../data/users");
 const error = require("../utilities/error");
 
 router
